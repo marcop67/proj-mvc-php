@@ -2,17 +2,8 @@
 
 require_once './App/Core/Controller.php';
 
-/**
- * Class NodeTreeController
- * This is a demo class.
- *
- * Please note:
- * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
- * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
- *
- */
-class NodeController extends Controller{
-
+class NodeController extends Controller
+{
     private $node_id = null;
     private $language = null;
     private $search_keyword = null;
@@ -34,7 +25,8 @@ class NodeController extends Controller{
 
     }
 
-    private function checkGetParameters(){
+    private function checkGetParameters()
+    {
 
         $this->checkMandatoryParameters($_GET["node_id"]);
         $this->checkMandatoryParameters($_GET["language"]);
@@ -49,51 +41,62 @@ class NodeController extends Controller{
 
     }
 
-    private function checkMandatoryParameters($parameter){
-        if ($parameter == null){
+    private function checkMandatoryParameters($parameter)
+    {
+        if ($parameter == null)
+        {
             $response = ["nodes" => [], "error" => "Missing mandatory params"];
-            $this->generateError($response);
+            $this->generateError($response, 400);
         }
     }
 
-    private function checkIsInteger($parameter){
-        if ($parameter != null){
-            if(!is_int((int)$parameter)){
+    private function checkIsInteger($parameter)
+    {
+        if ($parameter != null)
+        {
+            if(!is_int((int)$parameter))
+            {
                 $response = ["nodes" => [], "error" => "Invalid page number requested"];
-                $this->generateError($response);
+                $this->generateError($response, 400);
             }
         }
     }
 
-    private function checkIsOutOfRange($parameter){
-        if ($parameter != null){
+    private function checkIsOutOfRange($parameter)
+    {
+        if ($parameter != null)
+        {
             $parameterCasted = (int)$parameter;
-            if(!($parameterCasted >= 0 && $parameterCasted <= 1000)){
+            if(!($parameterCasted >= 0 && $parameterCasted <= 1000))
+            {
                 $response = ["nodes" => [], "error" => "Invalid page size requested"];
-                $this->generateError($response);
+                $this->generateError($response, 400);
             }
         }
     }
 
-    private function pagination(){
+    private function pagination()
+    {
         $this->page_offset = $this->page_size * $this->page_num;
     }
 
-    private function checkNode($model){
+    private function checkNode($model)
+    {
         //check se nodo padre c'è
-        if(!$model->getNode($this->node_id)){
+        if(!$model->getNode($this->node_id))
+        {
             $response = ["nodes" => [], "error" => "Invalid node id"];
-            $this->generateError($response);
+            $this->generateError($response, 400);
         }
     }
 
-    private function getChildsAndCount($model){
+    private function getChildsAndCount($model) : array
+    {
         $childs = $model->getChilds($this->node_id, $this->language, $this->search_keyword, $this->page_offset, $this->page_size);
 
-        for ($index=0; $index<count($childs); $index++){
-
+        for ($index=0; $index<count($childs); $index++)
+        {
             $child = $childs[$index];
-            //var_dump($child);
             $child_id=$child['node_id'];
 
             $num_childs = count($model->getChilds($child_id, $this->language, "", 0, 100));
@@ -101,7 +104,6 @@ class NodeController extends Controller{
 
             $childs[$index] = $child;
         }
-
         return $childs;
     }
 

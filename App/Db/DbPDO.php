@@ -2,7 +2,8 @@
 namespace App\Db;
 use PDO;
 
-class DbPDO{
+class DbPDO
+{
 
     protected static $instance;
     protected $connection;
@@ -15,7 +16,8 @@ class DbPDO{
         return static::$instance;
 
     }
-    protected function __construct(string $dsn, string $username, string $password, array $options) {
+    protected function __construct(string $dsn, string $username, string $password, array $options)
+    {
 
         $this->connection = new PDO($dsn, $username, $password);
         if(array_key_exists('options', $options)){

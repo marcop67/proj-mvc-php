@@ -2,21 +2,17 @@
 
 class NodeTree
 {
-    /**
-     * Every model needs a database connection, passed to the model
-     * @param object $db A PDO database connection
-     */
-    function __construct($dbConnection) {
-        try {
+    function __construct($dbConnection)
+    {
+        try
+        {
             $this->db = $dbConnection;
-        } catch (PDOException $e) {
+        } catch (PDOException $e)
+        {
             exit('Database connection could not be established.');
         }
     }
 
-    /**
-     * Get all songs from database
-     */
     public function getChilds($node_id, $language, $search_keyword, $page_num, $page_size)
     {
         $sql = "SELECT Child.idNode as node_id, TreeNames.nodeName as name
@@ -42,7 +38,8 @@ class NodeTree
         return $query->fetchAll();
     }
 
-    public function getNode($node_id){
+    public function getNode($node_id)
+    {
         $sql = "SELECT * FROM node_tree WHERE idNode=" . $node_id . ";";
         $query = $this->db->prepare($sql);
         $query->execute();

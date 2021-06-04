@@ -2,28 +2,16 @@
 
 require_once './App/Db/DbPDO.php';
 use App\Db\DbPDO as Db;
-/**
- * This is the "base controller class". All other "real" Controllers extend this class.
- */
+
 class Controller
 {
-    /**
-     * @var null Database Connection
-     */
     public $dbConnection = null;
 
-    /**
-     * Whenever a controller is created, open a database connection too. The idea behind is to have ONE connection
-     * that can be used by multiple Models (there are frameworks that open one connection per model).
-     */
     function __construct()
     {
         $this->openDatabaseConnection();
     }
 
-    /**
-     * Open the database connection with the credentials from application/Config/Config.php
-     */
     private function openDatabaseConnection()
     {
         // set the (optional) options of the PDO connection. in this case, we set the fetch mode to
@@ -42,14 +30,6 @@ class Controller
 
     }
 
-    /**
-     * Load the model with the given name.
-     * loadModel("SongModel") would include Models/songmodel.php and create the object in the controller, like this:
-     * $songs_model = $this->loadModel('SongsModel');
-     * Note that the model class name is written in "CamelCase", the model's filename is the same in lowercase letters
-     * @param string $model_name The name of the model
-     * @return object model
-     */
     public function loadModel(string $model_name)
     {
         require 'App/Models/' . $model_name . '.php';
@@ -60,12 +40,14 @@ class Controller
     public function generateResponse($response)
     {
         header('Content-Type: application/json; charset=utf-8');
+        http_response_code(200);
         echo json_encode($response);
     }
 
-    public function generateError($error)
+    public function generateError($error, $code)
     {
         header('Content-Type: application/json; charset=utf-8');
+        http_response_code($code);
         echo json_encode($error);
         exit();
     }
