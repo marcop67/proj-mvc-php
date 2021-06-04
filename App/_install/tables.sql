@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS dbproject;
+USE dbproject;
+
+CREATE TABLE node_tree (
+idNode INTEGER NOT NULL,
+level INTEGER NOT NULL,
+iLeft INTEGER NOT NULL,
+iRight INTEGER NOT NULL,
+PRIMARY KEY (idNode)
+);

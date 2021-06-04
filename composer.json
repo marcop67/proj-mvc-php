@@ -1,0 +1,13 @@
+{
+  "name": "marcopetralia/interview-proj",
+  "description": "description",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "MarcoPetralia"
+    }
+  ],
+  "require": {},
+  "autoload": {}
+}
